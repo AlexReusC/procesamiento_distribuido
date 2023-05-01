@@ -181,6 +181,7 @@ static int  RGB2Gray(unsigned char red, unsigned char green, unsigned char blue)
   return (int) gray;
 }
 
+//Se cambia la imagen a gris una sola vez
 void BMP_gray(BMP_Image *img){
   omp_set_num_threads(NUM_THREADS);
   const double startTime = omp_get_wtime();
@@ -209,7 +210,7 @@ void BMP_gray(BMP_Image *img){
   printf("En un tiempo total de (%lf)\n", (endTime - startTime));
 }
 
-/*Debugging functions*/
+//se genera la mascara
 float ** kernel(unsigned int size){
   unsigned int height = size;
   unsigned int width = size * 3; 
@@ -241,6 +242,7 @@ float ** kernel(unsigned int size){
   return matrix;
 }
 
+// Se guarda la imagen en forma de matriz
 char** pixelMat(BMP_Image* img) {
   const unsigned int height = img->height;
   const unsigned int width = img->width * 3;
@@ -266,6 +268,7 @@ char** pixelMat(BMP_Image* img) {
   return mat;
 }
 
+// toma el file y la mascara para realizar el desenfoque
 void BMP_blur(char* filename, unsigned int size){
   BMP_Image* img = BMP_open(filename);
   char** out_buffer = pixelMat(img);
@@ -322,6 +325,7 @@ void BMP_blur(char* filename, unsigned int size){
 int main(){
   omp_set_num_threads(NUM_THREADS);
 
+    //Se realiza el paralelismo
   #pragma omp sections
 {
     #pragma omp section
